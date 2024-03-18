@@ -1,8 +1,9 @@
-import requests
+import os
 import random
 import string
-import os
 from datetime import datetime
+
+import requests
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -26,17 +27,26 @@ def send_event_to_google_analytics(event_name: str, value: float):
             }
         }]
     }
+
     ga_response = requests.post(ga_url, json=ga_data)
     if ga_response.status_code == 204:
         print('Data sent to Google Analytics successfully.')
     else:
-        print(f'Failed to send data to Google Analytics. Status Code: {ga_response.status_code}')
+        print(f'Failed to send data to'
+              f' Google Analytics. Status Code: {ga_response.status_code}'
+              )
 
 
 def fetch_current_currency() -> float:
     """
     [
-        {"r030":840,"txt":"Долар США(довідковий)","rate":38.9549,"cc":"USD","exchangedate":"18.03.2024"}
+        {
+            "r030":840,
+            "txt":"Долар США(довідковий)",
+            "rate":38.9549,
+            "cc":"USD",
+            "exchangedate":"18.03.2024"
+        }
     ]
     :return:
     """
@@ -54,4 +64,3 @@ if __name__ == '__main__':
     send_event_to_google_analytics('usd_uah', usd_uah)
     now = datetime.now().isoformat()
     print(f'{now}: Current USD to UAH exchange rate: {usd_uah}')
-
